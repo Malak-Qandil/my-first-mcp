@@ -1,1 +1,1 @@
-I am building a To-Do List MCP for students so that they can organize and manage their daily tasks easily.
+I chose to build a task management MCP server that provides tools for creating, listing, and completing tasks.
