@@ -1,22 +1,83 @@
-Week 3 Data Plan
+# Week 3 Data Plan
 
-add_task
-- Source: Local JSON file
-- Fixture path: data/todos.json
-- Authentication: None
-- Rate limits: None
-- Happy path example: Creates a new task object and saves it into the JSON file.
+ Tool: add_task
 
-list_tasks
-- Source: Local JSON file
-- Fixture path: data/todos.json
-- Authentication: None
-- Rate limits: None
-- Happy path example: Reads the stored tasks from the JSON file and returns them.
+Source:
+Local JSON file
 
-complete_task
-- Source: Local JSON file
-- Fixture path: data/todos.json
-- Authentication: None
-- Rate limits: None
-- Happy path example: Finds a task by ID and updates its status to completed.
+Fixture path:
+data/todos.json
+
+Authentication:
+none
+
+Rate limits:
+none
+
+Failure modes:
+- Empty file
+- Invalid JSON format
+- Failed write operation
+
+Example response:
+{
+  "id": "3",
+  "title": "Study MCP",
+  "status": "pending"
+}
+
+
+Tool: list_tasks
+
+Source:
+Local JSON file
+
+Fixture path:
+data/todos.json
+
+Authentication:
+none
+
+Rate limits:
+none
+
+Failure modes:
+- Empty file
+- Invalid JSON format
+- No matching tasks
+
+Example response:
+[
+  {
+    "id": "1",
+    "title": "Finish MCP Week 3",
+    "status": "pending"
+  }
+]
+
+
+Tool: complete_task
+
+Source:
+Local JSON file
+
+Fixture path:
+data/todos.json
+
+Authentication:
+none
+
+Rate limits:
+none
+
+Failure modes:
+- Task ID not found
+- Invalid JSON format
+- Failed write operation
+
+Example response:
+{
+  "id": "1",
+  "title": "Finish MCP Week 3",
+  "status": "completed"
+}
