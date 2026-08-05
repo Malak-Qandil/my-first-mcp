@@ -43,3 +43,18 @@ If the student finishes a task, the AI uses complete_task to update its status.
 
 2. Tool schema changes may require updates later.
    - Mitigation: Keep tools small and follow clear input/output designs.
+
+
+# Design Notes
+
+## Notes from reading MCP example servers
+
+- Tool names usually follow a clear action-based naming pattern using lowercase and underscores, such as `list_items` or `create_item`.
+
+- Tool descriptions are short but specific, explaining what the tool does and what kind of input it expects.
+
+- Tools are organized separately to keep the server structure clean and make adding new tools easier.
+
+- Error messages should clearly explain what went wrong and help users understand how to fix invalid inputs.
+
+- Input schemas are designed carefully with validation rules and descriptions so the model can understand how to call each tool correctly.
