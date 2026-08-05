@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "title": "Finish MCP Week 3",
+    "status": "pending"
+  },
+  {
+    "id": "2",
+    "title": "Review TypeScript",
+    "status": "completed"
+  }
+]
