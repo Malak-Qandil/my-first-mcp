@@ -24,3 +24,12 @@ export const completeTaskInputSchema = z.object({
     .min(1)
     .describe("The unique identifier of the task to mark as completed"),
 });
+
+// task data schema
+export const taskSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  status: z.enum(["pending", "completed"]),
+});
+
+export const tasksSchema = z.array(taskSchema);

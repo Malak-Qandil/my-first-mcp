@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/server";
 import { completeTaskInputSchema } from "../schemas/index.js";
+import { completeExistingTask } from "../lib/tasks.js";
 
 export function registerCompleteTaskTool(server: McpServer) {
   server.registerTool(
@@ -8,23 +9,41 @@ export function registerCompleteTaskTool(server: McpServer) {
       description: "Mark a task as completed",
       inputSchema: completeTaskInputSchema,
     },
-    async () => {
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(
+    async ({ id }) => {
+      try {
+        const task = await completeExistingTask(id);
+
+        if (!task) {
+          return {
+            content: [
               {
-                ok: true,
-                stub: true,
-                tool: "complete_task",
+                type: "text",
+                text: `Task ${id} not found`,
               },
-              null,
-              2,
-            ),
-          },
-        ],
-      };
+            ],
+          };
+        }
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(task, null, 2),
+            },
+          ],
+        };
+      } catch (error) {
+        console.error("complete_task:", error);
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: "Failed to complete task",
+            },
+          ],
+        };
+      }
     },
   );
 }
