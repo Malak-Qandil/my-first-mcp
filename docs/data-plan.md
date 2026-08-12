@@ -1,83 +1,11 @@
-# Week 3 Data Plan
+Week 3 Data Plan
 
- Tool: add_task
+ P0 Tools
 
-Source:
-Local JSON file
+| Tool | Source | Fixture Path | Authentication | Rate Limits | Failure Modes | Example Response |
+|---|---|---|---|---|---|---|
+| add_task | Local JSON fixture | `data/todos.json` | None | None | Empty file; invalid JSON; failed write operation | `{ "id": "3", "title": "Study MCP", "status": "pending" }` |
+| list_tasks | Local JSON fixture | `data/todos.json` | None | None | Empty file; invalid JSON; no matching tasks | `{ "items": [{ "id": "1", "title": "Finish MCP Week 3", "status": "pending" }] }` |
+| complete_task | Local JSON fixture | `data/todos.json` | None | None | Task ID not found; invalid JSON; failed write operation | `{ "id": "1", "title": "Finish MCP Week 3", "status": "completed" }` |
 
-Fixture path:
-data/todos.json
-
-Authentication:
-none
-
-Rate limits:
-none
-
-Failure modes:
-- Empty file
-- Invalid JSON format
-- Failed write operation
-
-Example response:
-{
-  "id": "3",
-  "title": "Study MCP",
-  "status": "pending"
-}
-
-
-Tool: list_tasks
-
-Source:
-Local JSON file
-
-Fixture path:
-data/todos.json
-
-Authentication:
-none
-
-Rate limits:
-none
-
-Failure modes:
-- Empty file
-- Invalid JSON format
-- No matching tasks
-
-Example response:
-[
-  {
-    "id": "1",
-    "title": "Finish MCP Week 3",
-    "status": "pending"
-  }
-]
-
-
-Tool: complete_task
-
-Source:
-Local JSON file
-
-Fixture path:
-data/todos.json
-
-Authentication:
-none
-
-Rate limits:
-none
-
-Failure modes:
-- Task ID not found
-- Invalid JSON format
-- Failed write operation
-
-Example response:
-{
-  "id": "1",
-  "title": "Finish MCP Week 3",
-  "status": "completed"
-}
+ 
