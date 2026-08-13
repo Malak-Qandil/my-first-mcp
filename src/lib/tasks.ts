@@ -1,7 +1,13 @@
 import { readFile, writeFile } from "fs/promises";
+import path from "path";
 import { tasksSchema } from "../schemas/index.js";
 
-const FILE_PATH = "./data/todos.json";
+const DATA_DIR = path.resolve("./data");
+const FILE_PATH = path.resolve(DATA_DIR, "todos.json");
+
+if (!FILE_PATH.startsWith(DATA_DIR + path.sep)) {
+  throw new Error("Invalid data file path");
+}
 
 export async function loadTasks() {
   const data = await readFile(FILE_PATH, "utf-8");

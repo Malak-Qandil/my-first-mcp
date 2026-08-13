@@ -34,15 +34,15 @@
 
 ## Mitigations This Week
 
-- Use Zod schemas to validate all tool inputs and data loaded from files.
+- Use Zod schemas to validate all tool inputs and data loaded from files. String inputs have maximum lengths, fixed values use enums, and required strings reject empty values.
 
-- Restrict file access to `./data` and reject paths that escape the allowed directory.
+- Resolve the data file path with `path.resolve` and verify that the resolved path stays inside the `./data` directory.
 
-- Cap returned lists and response sizes to prevent runaway responses.
+- Cap task-list responses to 10 items to prevent unnecessarily large model responses. Task data is also capped at 1000 items by the data schema.
 
-- Use a shared network timeout and validate external API responses before using them.
+- The network helper uses an explicit host allowlist and an 8-second timeout. Requests to hosts that are not allowlisted are rejected before the network request is made. The helper is currently not used by any MCP tool.
 
-- Log detailed failures only to stderr and return short, actionable error messages to the model.
+- Log detailed failures only to stderr and return short, actionable error messages to the model. Raw stack traces and internal error details are not returned to the model.
 
 - Keep tokens and secrets out of source code, logs, and repository files.
 

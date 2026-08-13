@@ -4,6 +4,7 @@ import * as z from "zod/v4";
 export const addTaskInputSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(1)
     .max(200)
     .describe("The title of the task to create"),
@@ -21,15 +22,17 @@ export const listTasksInputSchema = z.object({
 export const completeTaskInputSchema = z.object({
   id: z
     .string()
+    .trim()
     .min(1)
+    .max(50)
     .describe("The unique identifier of the task to mark as completed"),
 });
 
 // task data schema
 export const taskSchema = z.object({
-  id: z.string(),
-  title: z.string(),
+  id: z.string().trim().min(1).max(50),
+  title: z.string().trim().min(1).max(200),
   status: z.enum(["pending", "completed"]),
 });
 
-export const tasksSchema = z.array(taskSchema);
+export const tasksSchema = z.array(taskSchema).max(1000);
