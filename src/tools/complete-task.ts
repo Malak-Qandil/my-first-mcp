@@ -18,7 +18,7 @@ export function registerCompleteTaskTool(server: McpServer) {
             content: [
               {
                 type: "text",
-                text: `Task ${id} not found`,
+                text: "Task not found",
               },
             ],
           };
