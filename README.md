@@ -72,6 +72,10 @@ You can use prompts such as:
 * "List all pending tasks."
 * "Mark task 3 as completed."
 
+## Example Conversations
+
+See [examples/conversations.md](examples/conversations.md) for three example conversations showing user prompts, expected tool calls, and good final answers.
+
 ## Data
 
 Tasks are stored locally in:
