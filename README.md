@@ -1,158 +1,132 @@
 # My First MCP
 
-A simple MCP server for managing tasks.
-
-## Tools
-
-- `add_task` - create a new task
-- `list_tasks` - list tasks with an optional status filter
-- `complete_task` - mark an existing task as completed
+A simple MCP server for managing tasks. It provides three tools for creating, listing, and completing tasks stored locally in `data/todos.json`.
 
 ## Requirements
 
-- Node.js
-- npm
+* Node.js
+* npm
 
 No environment variables are currently required.
 
-## Installation
+## Install
 
-Open a terminal in the project directory and install the dependencies:
+Clone the repository and install the dependencies:
 
+```bash
 npm install
+```
 
-## Run the MCP Server
+## Run
 
-Start the server with:
+Start the MCP server with:
 
+```bash
 npm run dev
+```
 
 You should see:
 
+```text
 my-first-mcp MCP server running on stdio
+```
 
 The server uses STDIO transport.
 
 ## Run with MCP Inspector
 
-In a separate terminal, start the MCP Inspector with:
+In a separate terminal, start the MCP Inspector:
 
+```bash
 npx @modelcontextprotocol/inspector
+```
 
-The Inspector will open in your browser.
+In the Inspector, add the server using:
 
-Add the server using:
+* **Transport:** STDIO
+* **Command:** `npx`
+* **Arguments:** `tsx src/index.ts`
+* **Working directory:** the root directory of this repository
 
-- Transport: STDIO
-- Command: npx
-- Arguments: tsx src/index.ts
-- Working directory: the root directory of this repository
+Connect to the server and verify that the three tools are available.
 
-Connect to the server.
+## Tools
 
-You should see these tools:
+| Tool | Description | Example input |
+|---|---|---|
+| `add_task` | Creates a new task | `{"title":"Finish MCP Week 5"}` |
+| `list_tasks` | Lists tasks with an optional status filter | `{"status":"pending"}` |
+| `complete_task` | Marks an existing task as completed | `{"id":"3"}` |
 
-- add_task
-- list_tasks
-- complete_task
+### Input rules
 
-## Tool Usage
+* `add_task` requires a non-empty title after trimming and limits the title to 200 characters.
+* `list_tasks` accepts `all`, `pending`, or `completed` as the status.
+* `complete_task` requires a non-empty task ID.
 
-### add_task
+## Example Prompts
 
-Creates a new task.
+You can use prompts such as:
 
-Example input:
-
-{"title":"Finish MCP Week 5"}
-
-The title must contain at least one non-whitespace character and can be at most 200 characters long.
-
-### list_tasks
-
-Lists tasks with an optional status filter.
-
-The status value can be:
-
-- all
-- pending
-- completed
-
-Example input:
-
-{"status":"pending"}
-
-### complete_task
-
-Marks an existing task as completed.
-
-Example input:
-
-{"id":"3"}
-
-If the task ID does not exist, the server returns:
-
-Task not found
+* "Add a task called Finish MCP Week 5."
+* "List all pending tasks."
+* "Mark task 3 as completed."
 
 ## Data
 
 Tasks are stored locally in:
 
+```text
 data/todos.json
+```
 
 Example input files are available in:
 
+```text
 examples/
+```
 
 They include:
 
-- add_task.json
-- list_tasks.json
-- complete_task.json
+* `add_task.json`
+* `list_tasks.json`
+* `complete_task.json`
 
 ## Troubleshooting
 
-### The server does not start
+### 1. The server does not start
 
-Run:
+Make sure the dependencies are installed:
 
+```bash
 npm install
+```
 
-Then:
+Then start the server again:
 
+```bash
 npm run dev
+```
 
-### Inspector cannot connect
+### 2. MCP Inspector cannot connect
 
 Check that:
 
-1. The Inspector is running.
-2. The transport is set to STDIO.
-3. The command is npx.
-4. The arguments are tsx src/index.ts.
-5. The working directory is the repository root.
+* The transport is set to **STDIO**.
+* The command is `npx`.
+* The argument is `tsx src/index.ts`.
+* The working directory is the repository root.
 
-### A task is not found
+### 3. A task is not found
 
-Use list_tasks with status set to all, then find an existing task ID and use it with complete_task.
+Use `list_tasks` with:
 
-## Project Structure
+```json
+{"status":"all"}
+```
 
-my-first-mcp/
-├── data/
-│   └── todos.json
-├── docs/
-├── examples/
-├── src/
-│   ├── lib/
-│   ├── schemas/
-│   ├── tools/
-│   └── index.ts
-├── .env.example
-├── package.json
-├── README.md
-└── SECURITY.md
+Find an existing task ID, then use that ID with `complete_task`.
 
-## Security
+## License
 
-See SECURITY.md for security controls and information about reporting issues.
+This project is licensed under the ISC License.
