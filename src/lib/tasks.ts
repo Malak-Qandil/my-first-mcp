@@ -1,9 +1,14 @@
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
 import { tasksSchema } from "../schemas/index.js";
+import { fileURLToPath } from "url";
 
-const DATA_DIR = path.resolve("./data");
-const FILE_PATH = path.resolve(DATA_DIR, "todos.json");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const PROJECT_ROOT = path.resolve(__dirname, "../..");
+const DATA_DIR = path.join(PROJECT_ROOT, "data");
+const FILE_PATH = path.join(DATA_DIR, "todos.json");
 
 if (!FILE_PATH.startsWith(DATA_DIR + path.sep)) {
   throw new Error("Invalid data file path");
@@ -56,6 +61,46 @@ export async function completeExistingTask(id: string) {
   }
 
   task.status = "completed";
+
+  await writeFile(
+    FILE_PATH,
+    JSON.stringify(tasks, null, 2),
+    "utf-8",
+  );
+
+  return task;
+}
+
+export async function deleteExistingTask(id: string) {
+  const tasks = await loadTasks();
+
+  const index = tasks.findIndex((task) => task.id === id);
+
+  if (index === -1) {
+    return null;
+  }
+
+  const [deletedTask] = tasks.splice(index, 1);
+
+  await writeFile(
+    FILE_PATH,
+    JSON.stringify(tasks, null, 2),
+    "utf-8",
+  );
+
+  return deletedTask;
+}
+
+export async function updateExistingTask(id: string, title: string) {
+  const tasks = await loadTasks();
+
+  const task = tasks.find((task) => task.id === id);
+
+  if (!task) {
+    return null;
+  }
+
+  task.title = title;
 
   await writeFile(
     FILE_PATH,

@@ -28,6 +28,32 @@ export const completeTaskInputSchema = z.object({
     .describe("The unique identifier of the task to mark as completed"),
 });
 
+// delete_task tool input schema
+export const deleteTaskInputSchema = z.object({
+  id: z
+    .string()
+    .trim()
+    .min(1)
+    .max(50)
+    .describe("The unique identifier of the task to delete"),
+});
+
+// update_task tool input schema
+export const updateTaskInputSchema = z.object({
+  id: z
+    .string()
+    .trim()
+    .min(1)
+    .max(50)
+    .describe("The unique identifier of the task to update"),
+  title: z
+    .string()
+    .trim()
+    .min(1)
+    .max(200)
+    .describe("The new title for the task"),
+});
+
 // task data schema
 export const taskSchema = z.object({
   id: z.string().trim().min(1).max(50),

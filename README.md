@@ -1,6 +1,6 @@
 # My First MCP
 
-A simple MCP server for managing tasks. It provides three tools for creating, listing, and completing tasks stored locally in `data/todos.json`.
+A simple MCP server for managing tasks. It provides five tools for creating, listing, completing, updating, and deleting tasks stored locally in `data/todos.json`.
 
 ## Requirements
 
@@ -48,7 +48,7 @@ In the Inspector, add the server using:
 * **Arguments:** `tsx src/index.ts`
 * **Working directory:** the root directory of this repository
 
-Connect to the server and verify that the three tools are available.
+Connect to the server and verify that the five tools are available.
 
 ## Tools
 
@@ -57,12 +57,16 @@ Connect to the server and verify that the three tools are available.
 | `add_task` | Creates a new task | `{"title":"Finish MCP Week 5"}` |
 | `list_tasks` | Lists tasks with an optional status filter | `{"status":"pending"}` |
 | `complete_task` | Marks an existing task as completed | `{"id":"3"}` |
+| `update_task` | Updates an existing task's title by ID | `{"id":"3","title":"Learn MCP Week 5"}` |
+| `delete_task` | Deletes a task by its ID | `{"id":"3"}` |
 
 ### Input rules
 
 * `add_task` requires a non-empty title after trimming and limits the title to 200 characters.
 * `list_tasks` accepts `all`, `pending`, or `completed` as the status.
 * `complete_task` requires a non-empty task ID.
+* `update_task` requires a non-empty task ID and a non-empty title after trimming (max 200 characters).
+* `delete_task` requires a non-empty task ID.
 
 ## Example Prompts
 
@@ -71,6 +75,8 @@ You can use prompts such as:
 * "Add a task called Finish MCP Week 5."
 * "List all pending tasks."
 * "Mark task 3 as completed."
+* "Update task 3 to Learn MCP Week 5."
+* "Delete task 3."
 
 ## Example Conversations
 
@@ -95,6 +101,8 @@ They include:
 * `add_task.json`
 * `list_tasks.json`
 * `complete_task.json`
+* `update_task.json`
+* `delete_task.json`
 
 ## Troubleshooting
 
@@ -129,7 +137,7 @@ Use `list_tasks` with:
 {"status":"all"}
 ```
 
-Find an existing task ID, then use that ID with `complete_task`.
+Find an existing task ID, then use that ID with `complete_task`, `update_task`, or `delete_task`.
 
 ## License
 
