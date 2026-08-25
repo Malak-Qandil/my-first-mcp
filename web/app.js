@@ -3,7 +3,8 @@
  * Browser → HTTP bridge (localhost:4000) → stdio MCP server → data/todos.json
  */
 
-const API_BASE = window.__MCP_BRIDGE_URL__ || "http://localhost:4000/api";
+const API_BASE =
+  window.__MCP_BRIDGE_URL__ || "https://my-first-mcp-cc7w.onrender.com/api";
 
 const state = {
   tasks: [],
