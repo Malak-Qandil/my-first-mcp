@@ -9,9 +9,9 @@ export function registerAddTaskTool(server: McpServer) {
       description: "Create a new task",
       inputSchema: addTaskInputSchema,
     },
-    async ({ title }) => {
+    async ({ title, description }) => {
       try {
-        const task = await addNewTask(title);
+        const task = await addNewTask(title, description);
 
         return {
           content: [

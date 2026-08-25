@@ -8,6 +8,12 @@ export const addTaskInputSchema = z.object({
     .min(1)
     .max(200)
     .describe("The title of the task to create"),
+  description: z
+    .string()
+    .trim()
+    .max(2000)
+    .optional()
+    .describe("Optional longer description of the task"),
 });
 
 // list_tasks tool input schema
@@ -52,12 +58,19 @@ export const updateTaskInputSchema = z.object({
     .min(1)
     .max(200)
     .describe("The new title for the task"),
+  description: z
+    .string()
+    .trim()
+    .max(2000)
+    .optional()
+    .describe("Optional longer description of the task"),
 });
 
 // task data schema
 export const taskSchema = z.object({
   id: z.string().trim().min(1).max(50),
   title: z.string().trim().min(1).max(200),
+  description: z.string().trim().max(2000).optional(),
   status: z.enum(["pending", "completed"]),
 });
 

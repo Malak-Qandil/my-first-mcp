@@ -11,6 +11,7 @@ import { callMcpTool, listTools } from "./mcpClient.js";
 export type Task = {
   id: string;
   title: string;
+  description?: string;
   status: "pending" | "completed";
 };
 
@@ -40,8 +41,8 @@ export async function listTasks(status?: string): Promise<Task[]> {
   return result.items;
 }
 
-export async function addTask(title: string): Promise<Task> {
-  const input = addTaskInputSchema.parse({ title });
+export async function addTask(title: string, description?: string): Promise<Task> {
+  const input = addTaskInputSchema.parse({ title, description });
   const result = await callMcpTool("add_task", input);
   return parseTask(result);
 }
@@ -53,8 +54,12 @@ export async function completeTask(id: string): Promise<Task> {
   return parseTask(result);
 }
 
-export async function updateTask(id: string, title: string): Promise<Task> {
-  const input = updateTaskInputSchema.parse({ id, title });
+export async function updateTask(
+  id: string,
+  title: string,
+  description?: string,
+): Promise<Task> {
+  const input = updateTaskInputSchema.parse({ id, title, description });
   const result = await callMcpTool("update_task", input);
   if (isTaskNotFound(result)) throw new TaskNotFoundError(id);
   return parseTask(result);

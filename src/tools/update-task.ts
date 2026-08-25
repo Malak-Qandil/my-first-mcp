@@ -9,9 +9,9 @@ export function registerUpdateTaskTool(server: McpServer) {
       description: "Update an existing task's title by ID",
       inputSchema: updateTaskInputSchema,
     },
-    async ({ id, title }) => {
+    async ({ id, title, description }) => {
       try {
-        const task = await updateExistingTask(id, title);
+        const task = await updateExistingTask(id, title, description);
 
         if (!task) {
           return {

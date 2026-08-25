@@ -31,12 +31,13 @@ export async function filterTasks(status?: string) {
     .slice(0, 10);
 }
 
-export async function addNewTask(title: string) {
+export async function addNewTask(title: string, description?: string) {
   const tasks = await loadTasks();
 
   const newTask = {
     id: String(tasks.length + 1),
     title,
+    ...(description ? { description } : {}),
     status: "pending" as const,
   };
 
@@ -91,7 +92,11 @@ export async function deleteExistingTask(id: string) {
   return deletedTask;
 }
 
-export async function updateExistingTask(id: string, title: string) {
+export async function updateExistingTask(
+  id: string,
+  title: string,
+  description?: string,
+) {
   const tasks = await loadTasks();
 
   const task = tasks.find((task) => task.id === id);
@@ -101,6 +106,9 @@ export async function updateExistingTask(id: string, title: string) {
   }
 
   task.title = title;
+  if (description !== undefined) {
+    (task as { description?: string }).description = description;
+  }
 
   await writeFile(
     FILE_PATH,

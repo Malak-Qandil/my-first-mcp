@@ -1,5 +1,8 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
-import { z } from "zod/v4";
+import {
+  addTaskInputSchema,
+  updateTaskInputSchema,
+} from "../../src/schemas/index.js";
 import * as taskService from "./taskService.js";
 
 export const router = Router();
@@ -38,23 +41,23 @@ router.get(
 );
 
 // add_task
-const addTaskBody = z.object({ title: z.string() });
 router.post(
   "/tasks",
   asyncHandler(async (req, res) => {
-    const { title } = addTaskBody.parse(req.body);
-    const task = await taskService.addTask(title);
+    const { title, description } = addTaskInputSchema.parse(req.body);
+    const task = await taskService.addTask(title, description);
     res.status(201).json(task);
   }),
 );
 
 // update_task
-const updateTaskBody = z.object({ title: z.string() });
 router.patch(
   "/tasks/:id",
   asyncHandler(async (req, res) => {
-    const { title } = updateTaskBody.parse(req.body);
-    const task = await taskService.updateTask(req.params.id, title);
+    const { title, description } = updateTaskInputSchema
+      .pick({ title: true, description: true })
+      .parse(req.body);
+    const task = await taskService.updateTask(req.params.id, title, description);
     res.json(task);
   }),
 );
