@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasks · my-first-mcp</title>
+  <meta name="description" content="A professional task dashboard backed by the my-first-mcp MCP server." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="app">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="currentColor" opacity=".15"/><path d="M8 14l4 4 8-8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="brand-name">my-first-mcp</div>
+          <div class="brand-tag">Task Console</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Views">
+        <p class="nav-section">Overview</p>
+        <button class="nav-item is-active" data-view="dashboard" type="button">
+          <span class="nav-icon" aria-hidden="true">▦</span> Dashboard
+        </button>
+        <p class="nav-section">Tasks</p>
+        <button class="nav-item" data-view="tasks-all" data-filter="all" type="button">
+          <span class="nav-icon" aria-hidden="true">☰</span> All Tasks
+        </button>
+        <button class="nav-item" data-view="tasks-pending" data-filter="pending" type="button">
+          <span class="nav-icon" aria-hidden="true">◷</span> Pending
+        </button>
+        <button class="nav-item" data-view="tasks-completed" data-filter="completed" type="button">
+          <span class="nav-icon" aria-hidden="true">✓</span> Completed
+        </button>
+        <p class="nav-section">MCP</p>
+        <button class="nav-item" data-view="tools" type="button">
+          <span class="nav-icon" aria-hidden="true">⌘</span> Tools
+        </button>
+        <button class="nav-item" data-view="activity" type="button">
+          <span class="nav-icon" aria-hidden="true">≡</span> Activity
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="conn-status">
+          <span class="conn-dot" id="connDot" aria-hidden="true"></span>
+          <span id="connLabel">Connecting…</span>
+        </div>
+        <p class="conn-note">Bridge → stdio MCP server</p>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="header">
+        <div class="header-text">
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="pageSubtitle">Real MCP tool calls over a secure HTTP bridge.</p>
+        </div>
+        <button class="btn btn-primary" id="btnAddTask" type="button">
+          <span aria-hidden="true">+</span> New Task
+        </button>
+      </header>
+
+      <main id="main">
+        <!-- Dashboard -->
+        <section id="view-dashboard" class="view is-active">
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span class="stat-label">Total Tasks</span>
+              <span class="stat-value" id="statTotal">–</span>
+            </article>
+            <article class="stat-card stat-pending">
+              <span class="stat-label">Pending</span>
+              <span class="stat-value" id="statPending">–</span>
+            </article>
+            <article class="stat-card stat-completed">
+              <span class="stat-label">Completed</span>
+              <span class="stat-value" id="statCompleted">–</span>
+            </article>
+            <article class="stat-card stat-rate">
+              <span class="stat-label">Completion Rate</span>
+              <span class="stat-value" id="statRate">–</span>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="card">
+              <div class="card-header">
+                <h2>Recent Tasks</h2>
+                <button class="btn btn-ghost btn-sm" id="btnViewAllTasks" type="button">View all</button>
+              </div>
+              <ul class="recent-list" id="recentTasks" aria-live="polite"></ul>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h2>MCP Activity</h2>
+                <button class="btn btn-ghost btn-sm" id="btnViewActivity" type="button">Full log</button>
+              </div>
+              <ul class="activity-feed" id="activityFeed" aria-live="polite">
+                <li class="activity-empty">No activity yet.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Task list views -->
+        <section id="view-tasks" class="view">
+          <div class="toolbar">
+            <div class="search-wrap">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input type="search" id="searchInput" placeholder="Search by title…" aria-label="Search tasks" autocomplete="off" />
+            </div>
+            <div class="filter-group" role="group" aria-label="Status filter">
+              <button class="filter-btn is-active" data-status="all" type="button">All</button>
+              <button class="filter-btn" data-status="pending" type="button">Pending</button>
+              <button class="filter-btn" data-status="completed" type="button">Completed</button>
+            </div>
+          </div>
+
+          <div id="taskRegion" aria-live="polite">
+            <div class="state-panel" id="loadingState" hidden>
+              <div class="spinner" aria-hidden="true"></div>
+              <p>Loading tasks…</p>
+            </div>
+            <div class="state-panel state-error" id="errorState" hidden>
+              <p class="state-title">Couldn't load tasks</p>
+              <p class="state-body" id="errorMessage"></p>
+              <button class="btn btn-secondary" id="btnRetry" type="button">Try again</button>
+            </div>
+            <div class="state-panel" id="emptyState" hidden>
+              <p class="state-title">No tasks found</p>
+              <p class="state-body" id="emptyMessage">Add your first task to get started.</p>
+            </div>
+            <ul class="task-table" id="taskList"></ul>
+          </div>
+        </section>
+
+        <!-- Tools -->
+        <section id="view-tools" class="view">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Registered MCP Tools</h2>
+                <p class="card-desc">Loaded live from the MCP server's <code>tools/list</code> endpoint.</p>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btnRefreshTools" type="button">Refresh</button>
+            </div>
+            <div id="toolsContainer">
+              <div class="state-panel"><div class="spinner" aria-hidden="true"></div><p>Loading tools…</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Activity -->
+        <section id="view-activity" class="view">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>MCP Activity Log</h2>
+                <p class="card-desc">Every action below is a real call relayed through the bridge to the stdio MCP server.</p>
+              </div>
+              <button class="btn btn-secondary btn-sm" id="btnClearActivity" type="button">Clear</button>
+            </div>
+            <ul class="activity-log" id="activityLog">
+              <li class="activity-empty">No activity yet — actions you take will appear here.</li>
+            </ul>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Task modal (add / edit) -->
+  <div class="modal-backdrop" id="taskModal" hidden aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+      <div class="modal-header">
+        <h2 id="taskModalTitle">New Task</h2>
+        <button class="modal-close" id="taskModalClose" type="button" aria-label="Close">&times;</button>
+      </div>
+      <form id="taskForm">
+        <label class="field-label" for="taskTitleInput">Title</label>
+        <input class="field-input" id="taskTitleInput" type="text" maxlength="200" required autocomplete="off" placeholder="What needs to be done?" />
+        <p class="field-hint">Up to 200 characters. Validated by the MCP server.</p>
+        <label class="field-label" for="taskDescInput">Description <span class="field-optional">(optional)</span></label>
+        <textarea class="field-input field-textarea" id="taskDescInput" maxlength="2000" rows="3" placeholder="Add more detail…"></textarea>
+        <p class="field-hint">Up to 2000 characters.</p>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="taskModalCancel" type="button">Cancel</button>
+          <button class="btn btn-primary" id="taskModalSubmit" type="submit">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete confirmation -->
+  <div class="modal-backdrop" id="deleteModal" hidden aria-hidden="true">
+    <div class="modal modal-danger" role="alertdialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+      <div class="modal-header">
+        <h2 id="deleteModalTitle">Delete Task?</h2>
+        <button class="modal-close" id="deleteModalClose" type="button" aria-label="Close">&times;</button>
+      </div>
+      <p class="modal-body" id="deleteModalBody"></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="deleteModalCancel" type="button">Cancel</button>
+        <button class="btn btn-danger" id="deleteModalConfirm" type="button">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="assertive" aria-atomic="true"></div>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

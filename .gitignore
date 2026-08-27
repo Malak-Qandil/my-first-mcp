@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env*
+
+# Build output
+dist/
+build/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Secrets / private keys
+*.pem
+*.key
+*.secret

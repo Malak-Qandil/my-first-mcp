@@ -1,0 +1,1 @@
+I chose to build a task management MCP server that provides tools for creating, listing, and completing tasks.
