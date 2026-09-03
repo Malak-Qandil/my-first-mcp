@@ -4,8 +4,8 @@ A simple MCP server for managing tasks. It provides five tools for creating, lis
 
 ## Requirements
 
-* Node.js
-* npm
+- Node.js
+- npm
 
 No environment variables are currently required.
 
@@ -19,8 +19,10 @@ npm install
 
 ## Training
 
-This project was developed as part of the Building an MCP for an AI Engine training program by NextFlows Academy.
+This project was developed as part of the **Building an MCP for an AI Engine** training program by NextFlows Academy.
+
 https://nextflows.ai/academy
 
 ## Project Links
-Live Website: https://my-first-mcp-web.onrender.com/
+
+- **Live Website:** https://my-first-mcp-web.onrender.com/
